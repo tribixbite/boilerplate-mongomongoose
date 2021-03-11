@@ -3,6 +3,49 @@ var mongoose = require('mongoose');
 mongooseURI = process.env.MONGO_URI;
 mongoose.connect(mongooseURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
+const db = mongoose.connection; //https://mongoosejs.com/docs/index.html
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  // we're connected!
+
+  const kittySchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    personality: String // String is shorthand for {type: String}
+  });
+  kittySchema.add({ color: 'string', age: 'number' });
+  kittySchema.methods.speak = function () {
+    const greeting = this.name
+      ? "Meow name is " + this.name
+      : "I don't have a name";
+    console.log(greeting);
+  }
+  const Kitten = mongoose.model('Kitten', kittySchema);
+
+  const fluffy = new Kitten({ name: 'fluffy' });
+  fluffy.speak(); // "Meow name is fluffy"
+
+  fluffy.save(function (err, fluffy) {
+    if (err) return console.error(err);
+    fluffy.speak();
+  });
+
+  const personSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    age: Number,
+    favoriteFoods: { type: Array }
+  });
+
+
+  /*
+  Kitten.find(function (err, kittens) {
+    if (err) return console.error(err);
+    console.log(kittens);
+  })
+  Kitten.find({ name: /^fluff/ }, callback);
+
+  */
+});
+
 let Person;
 
 const createAndSavePerson = (done) => {
