@@ -3,6 +3,14 @@ var mongoose = require('mongoose');
 mongooseURI = process.env.MONGO_URI;
 mongoose.connect(mongooseURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
+  const personSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  age: Number,
+  favoriteFoods: [String]
+});
+
+const Person = mongoose.model('Person', personSchema); 
+
 const db = mongoose.connection; //https://mongoosejs.com/docs/index.html
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -24,15 +32,9 @@ db.once('open', function() {
   const fluffy = new Kitten({ name: 'fluffy' });
   fluffy.speak(); // "Meow name is fluffy"
 
-  fluffy.save(function (err, fluffy) {
+ /* fluffy.save(function (err, fluffy) {
     if (err) return console.error(err);
     fluffy.speak();
-  });
-
-  const personSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    age: Number,
-    favoriteFoods: { type: Array }
   });
 
 
@@ -46,7 +48,7 @@ db.once('open', function() {
   */
 });
 
-let Person;
+//let Person;
 
 const createAndSavePerson = (done) => {
   done(null /*, data*/);
