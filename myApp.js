@@ -12,7 +12,9 @@ mongoose.connect(mongooseURI, { useNewUrlParser: true, useUnifiedTopology: true 
 const Person = mongoose.model('Person', personSchema); 
 
 const db = mongoose.connection; //https://mongoosejs.com/docs/index.html
-db.on('error', console.error.bind(console, 'connection error:'));
+
+
+/*db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   // we're connected!
 
@@ -45,13 +47,17 @@ db.once('open', function() {
   })
   Kitten.find({ name: /^fluff/ }, callback);
 
-  */
+ 
 });
-
+ */
 //let Person;
 
 const createAndSavePerson = (done) => {
-  done(null /*, data*/);
+  const jim = new Person({name: 'Jim', age: 25, favoriteFoods: ["Apples", "Walnuts"]});
+  jim.save(function (err, data){
+    if (err) return console.error(err);
+    done(null, data);
+  });
 };
 
 const createManyPeople = (arrayOfPeople, done) => {
