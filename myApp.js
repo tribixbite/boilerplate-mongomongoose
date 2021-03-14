@@ -122,11 +122,11 @@ const removeById = (personId, done) => {
 
 const removeManyPeople = (done) => {
   const nameToRemove = "Mary";
-
-  Person.findOneAndRemove({ name: personName}, function(err, person){
+  Person.remove({name: nameToRemove}, function(err,data){
     if (err) return console.error(err);
-    done(null, person);
+    done(null, data);
   });
+
 };
 
 const queryChain = (done) => {
